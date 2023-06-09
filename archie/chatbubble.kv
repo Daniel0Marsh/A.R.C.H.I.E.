@@ -1,0 +1,33 @@
+<ChatBubble>:
+    size_hint_y: None
+    height: self.minimum_height
+
+    MDBoxLayout:
+        size_hint_x: None  # Set the width to a specific value
+        width: "350dp"  # Replace "350dp" with your desired width
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'horizontal'  # Change orientation to horizontal for the icon and label
+        padding: "10dp"  # Add padding to the sides
+
+        canvas:
+            Color:
+                rgba: root.bubble_color
+            RoundedRectangle:
+                pos: self.x + 20, self.y  # Adjust the x-position to add more space on the left
+                size: self.width + 40, self.height  # Adjust the width to add more space on the left
+
+        MDIcon: # Add an MDIcon widget for the icon
+            icon: root.icon  # Replace "chat" with the desired icon name
+            theme_text_color: "Primary"
+            text_color: app.theme_cls.text_color
+            size_hint_x: None  # Set the icon width to a specific value
+            width: dp(24)  # Replace dp(24) with the desired icon width
+            padding: "10dp", "0dp", "10dp", "0dp"  # Add padding to the sides
+
+        MDLabel:
+            text: root.msg
+            theme_text_color: "Primary"
+            text_color: app.theme_cls.text_color
+            adaptive_height: True
+            font_style: "Body1"

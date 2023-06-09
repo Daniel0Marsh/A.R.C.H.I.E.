@@ -1,0 +1,65 @@
+<ChatScreen>:
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: app.theme_cls.bg_normal
+        MDTopAppBar:
+            height: 50
+            title: "A.R.C.H.I.E."
+            left_action_items: [["home", lambda x: root.home()]]
+            right_action_items: [["delete", lambda x: root.delete_chat()], ["theme-light-dark", lambda x: app.switch_theme_style()]]
+
+
+        BoxLayout:
+            orientation: "vertical"
+
+            ScrollView:
+                do_scroll_y: True
+                effect_cls: 'ScrollEffect'
+                bar_width: 0
+                MDBoxLayout:
+                    adaptive_height: True
+                    orientation: 'vertical'
+                    md_bg_color: app.theme_cls.primary_color
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        md_bg_color: app.theme_cls.bg_normal
+                        size_hint_y: None
+                        adaptive_height: True
+                        radius: [20, 20, 0, 0]
+                        MDList:
+                            id: msglist  # Add an id for the MDList widget
+                            spacing: 25
+
+                        MDList:
+                            id: new_chat  # Add an id for the MDList widget
+                            spacing: 25
+
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: 1, None
+
+            MDCard:
+                elevation: 5
+                padding: "16dp"
+                spacing: "16dp"
+                orientation: "horizontal"
+                md_bg_color: app.theme_cls.bg_dark if app.theme_cls.theme_style == 'Dark' else app.theme_cls.bg_light
+
+                MDTextField:
+                    id: user_input
+                    mode: "round"
+                    hint_text: "Send a message."
+                    max_height: "50dp"
+                    multiline: True
+                    size_hint_x: .90
+                    on_text_validate: root.send_message()
+
+                MDIconButton:
+                    id: btn_1
+                    icon: "send"
+                    icon_size: "20sp"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_release: root.send_message()

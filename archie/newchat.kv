@@ -1,0 +1,85 @@
+<NewChat>:
+    size_hint: 1, None
+    height: self.minimum_height
+    padding: "10dp", "10dp", "10dp", "10dp"
+
+    MDBoxLayout:
+        size_hint: 1, None
+        pos_hint: {"center_x": .5}
+        height: self.minimum_height
+        orientation: 'vertical'
+        spacing: "25dp"
+
+        MDCard:
+            size_hint: 1, None
+            size: "300dp", "140dp"
+            pos_hint: {"center_x": .5}
+            elevation: 3
+            padding: "8dp"
+            spacing: "8dp"
+            theme_text_color: "Primary"
+            md_bg_color: app.theme_cls.bg_dark if app.theme_cls.theme_style == 'Dark' else app.theme_cls.bg_light
+
+            BoxLayout:
+                orientation: "vertical"
+                spacing: "8dp"
+
+                MDLabel:
+                    text: "My History"
+                    theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
+                    font_style: "H6"
+
+                MDLabel:
+                    pos_hint: {"center_x": .5}
+                    text: "There are no conversations yet..."
+                    theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
+
+
+        MDCard:
+            size_hint: 1, None
+            size: "300dp", "140dp"
+            pos_hint: {"center_x": .5}
+            elevation: 3
+            padding: "8dp"
+            spacing: "8dp"
+            theme_text_color: "Primary"
+            md_bg_color: app.theme_cls.bg_dark if app.theme_cls.theme_style == 'Dark' else app.theme_cls.bg_light
+
+            BoxLayout:
+                orientation: "vertical"
+
+                MDLabel:
+                    text: "[size=18][b]Important Note:[/b][/size]"
+                    theme_text_color: "Error"
+                    markup: True
+
+                MDLabel:
+                    text: "Chatbots are AI models that provide automated responses. While they can be helpful, they may not always provide accurate or appropriate information."
+                    theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
+                    font_style: "Caption"
+                    markup: True
+
+
+        BoxLayout:
+            size_hint: 1, None
+            pos_hint: {"center_x": .5}
+            padding: "35dp", 0, 0, 0
+
+            BoxLayout:
+                orientation: "horizontal"
+                spacing: "10dp"
+
+                MDRaisedButton:
+                    text: "Tell me a joke"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_release: root.chat_subject("Tell me a joke")
+
+                MDRaisedButton:
+                    text: "Fun fact"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_release: root.chat_subject("Tell me a fun fact")
+
+                MDRaisedButton:
+                    text: "What's AI"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_release: root.chat_subject("Tell me what AI is")
