@@ -1,7 +1,5 @@
 # A.R.C.H.I.E. - Artificial Responsive Chatbot for Helpful Interactions and Engagement
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
 A mobile app project that features A.R.C.H.I.E., an AI chatbot built using KivyMD framework.
 
 ## Table of Contents
@@ -10,7 +8,6 @@ A mobile app project that features A.R.C.H.I.E., an AI chatbot built using KivyM
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [License](#license)
 - [Contact](#contact)
 
 ## Project Description
@@ -37,19 +34,16 @@ To install and run the A.R.C.H.I.E. app, follow these steps:
 
    ```shell
    git clone https://github.com/your-username/archie-app.git
-   shell
 
 2. Install the required dependencies:
 
    ```shell
    pip install -r requirements.txt
-   shell
 
 3. Build and run the app:
 
    ```shell
    python main.py
-  shell
 
    For detailed instructions on setting up the development environment and deploying the app to specific mobile platforms, refer to the documentation.
 
@@ -58,10 +52,6 @@ To install and run the A.R.C.H.I.E. app, follow these steps:
    Once the A.R.C.H.I.E. app is installed and running, users can engage with the chatbot by typing queries in the chat interface. A.R.C.H.I.E. will process the input and provide relevant responses based on its trained model and knowledge base.
 
    Feel free to explore different topics and ask questions to test the capabilities of A.R.C.H.I.E. The chatbot is designed to provide helpful and informative answers to enhance user engagement on your company website.
-
-## License
-
-   This project is licensed under the MIT License. See the LICENSE file for more information.
 
 ## Contact
 
