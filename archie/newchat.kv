@@ -8,7 +8,7 @@
         pos_hint: {"center_x": .5}
         height: self.minimum_height
         orientation: 'vertical'
-        spacing: "15dp"  # Adjust the spacing between the cards and buttons
+        spacing: "20dp"  # Adjust the spacing between the cards and buttons
 
         MDCard:
             size_hint: 1, None
@@ -40,7 +40,6 @@
                         adaptive_height: True
                         orientation: 'vertical'
 
-
                         MDBoxLayout:
                             orientation: 'vertical'
                             size_hint_y: None
@@ -49,6 +48,7 @@
                             MDList:
                                 id: chatlist
                                 spacing: 5
+
 
 
         MDCard:
@@ -84,15 +84,18 @@
 
             MDRaisedButton:
                 text: "Tell me a joke"
+                theme_text_color: "Primary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me a joke")
 
             MDRaisedButton:
                 text: "Fun fact"
+                theme_text_color: "Primary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me a fun fact")
 
             MDRaisedButton:
                 text: "What's AI"
+                theme_text_color: "Primary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me what AI is")

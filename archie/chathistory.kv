@@ -5,24 +5,36 @@
     MDBoxLayout:
         size_hint: 1, None
         height: self.minimum_height
-        orientation: 'horizontal'  # Change orientation to horizontal for the icon and label
-        padding: "5dp"  # Add padding to the sides
+        orientation: 'horizontal'
+        padding: "5dp"
 
         MDCard:
-            size_hint: 1, None  # Disable size_hint to allow custom sizing
+            size_hint: 1, None
             elevation: 2
-            padding: "5dp"  # Add padding to the sides
-            height: label.texture_size[1] + self.padding[1] * 2  # Adjust height based on label size
+            padding: "5dp"
+            height: label.texture_size[1] + self.padding[1] * 2
             theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
             md_bg_color: app.theme_cls.primary_color
 
             BoxLayout:
-                orientation: "vertical"
+                orientation: "horizontal"
                 spacing: "8dp"
 
                 MDLabel:
-                    id: label  # Assign an ID to the label widget
+                    id: label
                     text: root.title
-                    theme_text_color: "Custom"  # Set the theme_text_color to Custom
+                    theme_text_color: "Primary"
                     adaptive_height: True
                     font_style: "Body1"
+
+                MDIconButton:
+                    icon: "folder-open"
+                    pos_hint: {"center_y": 0.5}
+                    theme_text_color: "Primary"
+                    on_release: root.open(root.title)
+
+                MDIconButton:
+                    icon: "delete"
+                    pos_hint: {"center_y": 0.5}
+                    theme_text_color: "Primary"
+                    on_release: root.delete(root.title, root)
