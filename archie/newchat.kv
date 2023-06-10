@@ -8,11 +8,11 @@
         pos_hint: {"center_x": .5}
         height: self.minimum_height
         orientation: 'vertical'
-        spacing: "25dp"
+        spacing: "15dp"  # Adjust the spacing between the cards and buttons
 
         MDCard:
             size_hint: 1, None
-            size: "300dp", "140dp"
+            size: "300dp", "180dp"
             pos_hint: {"center_x": .5}
             elevation: 3
             padding: "8dp"
@@ -29,10 +29,26 @@
                     theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
                     font_style: "H6"
 
-                MDLabel:
-                    pos_hint: {"center_x": .5}
-                    text: "There are no conversations yet..."
-                    theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
+                ScrollView:
+                    do_scroll_y: True
+                    effect_cls: 'ScrollEffect'
+                    bar_width: 0
+                    size_hint_y: None
+                    height: self.parent.height - dp(20)  # Adjust the height based on label height
+
+                    MDBoxLayout:
+                        adaptive_height: True
+                        orientation: 'vertical'
+
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            size_hint_y: None
+                            adaptive_height: True
+                            radius: [20, 20, 0, 0]
+                            MDList:
+                                id: chatlist
+                                spacing: 5
 
 
         MDCard:
@@ -59,27 +75,24 @@
                     font_style: "Caption"
                     markup: True
 
-
         BoxLayout:
             size_hint: 1, None
             pos_hint: {"center_x": .5}
+            height: self.minimum_height
             padding: "35dp", 0, 0, 0
+            spacing: "10dp"  # Adjust the spacing between the buttons
 
-            BoxLayout:
-                orientation: "horizontal"
-                spacing: "10dp"
+            MDRaisedButton:
+                text: "Tell me a joke"
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.chat_subject("Tell me a joke")
 
-                MDRaisedButton:
-                    text: "Tell me a joke"
-                    md_bg_color: app.theme_cls.primary_color
-                    on_release: root.chat_subject("Tell me a joke")
+            MDRaisedButton:
+                text: "Fun fact"
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.chat_subject("Tell me a fun fact")
 
-                MDRaisedButton:
-                    text: "Fun fact"
-                    md_bg_color: app.theme_cls.primary_color
-                    on_release: root.chat_subject("Tell me a fun fact")
-
-                MDRaisedButton:
-                    text: "What's AI"
-                    md_bg_color: app.theme_cls.primary_color
-                    on_release: root.chat_subject("Tell me what AI is")
+            MDRaisedButton:
+                text: "What's AI"
+                md_bg_color: app.theme_cls.primary_color
+                on_release: root.chat_subject("Tell me what AI is")

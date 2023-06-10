@@ -13,10 +13,13 @@ from kivy.uix.gridlayout import GridLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
 from kivymd.theming import ThemeManager
+from kivy.clock import Clock
 from nltk.chat.util import Chat, reflections
 from chatbot_data import pairs, reflections
-from kivy.clock import Clock
+import json
+import os
 
+Builder.load_file('chathistory.kv')
 Builder.load_file('chatbubble.kv')
 Builder.load_file('newchat.kv')
 Builder.load_file('chat.kv')
@@ -31,8 +34,23 @@ class ChatBubble(MDBoxLayout):
     bubble_color = ObjectProperty()
 
 
+class ChatHistory(MDBoxLayout):
+    '''a widget for displaying saved chats'''
+    title = StringProperty('')
+
+
 class NewChat(MDBoxLayout):
     '''A widget for an empty chat'''
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls = ThemeManager()
+        self.chatlist = self.ids['chatlist']
+        chat_history = ["some title", 'another title', 'one more', 'another title', 'one more']
+
+        for item in chat_history:
+            chat_history_bbble = ChatHistory(title=item,)
+            self.chatlist.add_widget(chat_history_bbble)
 
     def chat_subject(self, subject):
         user_input = self.parent_screen.ids.user_input
@@ -51,6 +69,9 @@ class ChatScreen(Screen):
         self.chat_bubbles = []  # List to store ChatBubble instances
         self.new_chat = self.ids['new_chat']
         self.new_chat_widget_instance = None  # Instance of NewChat widget
+        self.chat_history = []
+
+
 
     def on_enter(self):
         # Create a new chat widget and add it to the screen
@@ -58,6 +79,8 @@ class ChatScreen(Screen):
         new_chat_widget.parent_screen = self
         self.new_chat.add_widget(new_chat_widget)
         self.new_chat_widget_instance = new_chat_widget
+
+
 
     def send_message(self):
         # Get user input and remove leading/trailing whitespaces
@@ -74,9 +97,14 @@ class ChatScreen(Screen):
         if user_text:
             # Add user's message to chat history
             user_bubble = ChatBubble(msg=user_text, icon="account", bubble_color=self.theme_cls.primary_color)
+
+            self.chat_history.append(user_text)
+
             self.msglist.add_widget(user_bubble)
             self.chat_bubbles.append(user_bubble)
             self.get_chatbot_response(user_text)
+
+
 
     def get_chatbot_response(self, user_text):
         # Add typing indicator bubble
@@ -86,6 +114,8 @@ class ChatScreen(Screen):
 
         # Schedule displaying chatbot's response after a delay
         Clock.schedule_once(lambda dt: self.display_chatbot_response(user_text), 1.0)
+
+
 
     def display_chatbot_response(self, user_text):
         # Get response from the chatbot
@@ -99,16 +129,57 @@ class ChatScreen(Screen):
 
         # Add chatbot's response to chat history
         bot_bubble = ChatBubble(msg=response, icon="robot", bubble_color=self.theme_cls.accent_color)
+
+        self.chat_history.append(response)
+
         self.msglist.add_widget(bot_bubble)
         self.chat_bubbles.append(bot_bubble)
+
+
+
+    def save_chat(self, title=None):
+        # saving chat history
+        messages = self.chat_history
+
+        if messages:
+            if title:
+                chat = {title: messages}
+            else:
+                title = self.chat_history[0]
+
+            file_path = "chat_history.json"
+
+            try:
+                # Load the existing data
+                with open(file_path, "r") as file:
+                    existing_data = json.load(file)
+            except FileNotFoundError:
+                existing_data = {}
+
+            # Extend existing data or create a new entry
+            existing_data.setdefault(title, []).extend(messages)
+
+            # Write the updated data to the file
+            with open(file_path, "w") as file:
+                json.dump(existing_data, file, indent=4)  # Write the entire data with indentation
+
+            # Clear chat history
+            self.chat_history = []
+
+
 
     def chat_maintenance(self, user_input):
         # Clear user input
         user_input.text = ""
 
+
+
     def home(self):
         # Clear chat history or perform any desired action
+        self.save_chat()
         self.delete_chat()
+
+
 
     def delete_chat(self):
         # Clear chat history or perform any desired action
@@ -122,6 +193,8 @@ class ChatScreen(Screen):
             new_chat_widget.parent_screen = self
             self.new_chat.add_widget(new_chat_widget)
             self.new_chat_widget_instance = new_chat_widget
+
+
 
 
 class MyApp(MDApp):
