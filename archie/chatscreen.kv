@@ -6,8 +6,7 @@
         MDTopAppBar:
             height: 50
             title: "A.R.C.H.I.E."
-            left_action_items: [["home", lambda x: root.home()]]
-            right_action_items: [["delete", lambda x: root.delete_chat()], ["theme-light-dark", lambda x: app.switch_theme_style()]]
+            right_action_items: [["home", lambda x: root.home()], ["delete", lambda x: root.delete_chat()],["theme-light-dark", lambda x: app.switch_theme_style()]] if len(msglist.children) > 0 else [["theme-light-dark", lambda x: app.switch_theme_style()]]
 
 
         BoxLayout:

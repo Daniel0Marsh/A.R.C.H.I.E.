@@ -38,20 +38,15 @@ class ChatBubble(MDBoxLayout):
 class ChatHistory(BoxLayout):
     '''A widget for displaying saved chats'''
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.theme_cls = ThemeManager()
-
     title = StringProperty('')
+
 
     def open(self, title):
         # Get a reference to the ChatScreen instance
         chat_screen = App.get_running_app().root.get_screen("chatscreen")
 
-        # Check if the new chat instance is displayed and remove it
-        if chat_screen.new_chat_widget_instance:
-            chat_screen.new_chat.remove_widget(chat_screen.new_chat_widget_instance)
-            chat_screen.new_chat_widget_instance = None
+        # Check remove new chat widget
+        chat_screen.remove_new_chat_widget()
 
         # Read chat history data from JSON file
         with open('chat_history.json', 'r') as json_file:
@@ -63,10 +58,7 @@ class ChatHistory(BoxLayout):
         # Iterate over the chat history and add ChatBubble widgets to msglist
         for i, message in enumerate(chat_messages):
             sender = "robot" if i % 2 == 0 else "account"
-
             chat_screen.add_chat_bubble(message, sender)
-
-
 
 
     def delete(self, title, chat_history_instance):
@@ -101,6 +93,7 @@ class NewChat(MDBoxLayout):
             chat_history_bbble = ChatHistory(title=item)
             self.chatlist.add_widget(chat_history_bbble)
 
+
     def chat_subject(self, subject):
         user_input = self.parent_screen.ids.user_input
         user_input.text = subject
@@ -115,44 +108,44 @@ class ChatScreen(Screen):
         self.theme_cls = ThemeManager()
         self.chatbot = Chat(pairs, reflections)
         self.msglist = self.ids['msglist']
-        self.chat_bubbles = []  # List to store ChatBubble instances
         self.new_chat = self.ids['new_chat']
         self.new_chat_widget_instance = None  # Instance of NewChat widget
-        self.chat_history = []
+        self.chat_history = []  # List to store Chat messages
+        self.chat_bubbles = []  # List to store ChatBubble instances
+
 
     def on_enter(self):
         # Create a new chat widget and add it to the screen
-        new_chat_widget = NewChat()
-        new_chat_widget.parent_screen = self
-        self.new_chat.add_widget(new_chat_widget)
-        self.new_chat_widget_instance = new_chat_widget
+        if not self.new_chat_widget_instance:
+            new_chat_widget = NewChat()
+            new_chat_widget.parent_screen = self
+            self.new_chat.add_widget(new_chat_widget)
+            self.new_chat_widget_instance = new_chat_widget
 
-    def send_message(self):
-        # Get user input and remove leading/trailing whitespaces
-        user_input = self.ids.user_input
-        user_text = user_input.text.strip()
 
-        self.chat_maintenance(user_input)
-
+    def remove_new_chat_widget(self):
         # Check if the new chat instance is displayed and remove it
         if self.new_chat_widget_instance:
             self.new_chat.remove_widget(self.new_chat_widget_instance)
             self.new_chat_widget_instance = None
 
+
+    def send_message(self):
+        # Get user input and remove leading/trailing whitespaces
+        user_input = self.ids.user_input
+        user_text = user_input.text.strip()
+        user_input.text = ""
+
+        # Check remove new chat widget
+        self.remove_new_chat_widget()
+
         self.add_chat_bubble(user_text, sender="account")
         self.get_chatbot_response(user_text)
 
 
-
     def get_chatbot_response(self, user_text):
         # Add typing indicator bubble
-        typing_bubble = ChatBubble(
-            msg="Typing...",
-            icon="robot",
-            bubble_color=self.theme_cls.accent_color
-        )
-        self.msglist.add_widget(typing_bubble)
-        self.chat_bubbles.append(typing_bubble)
+        self.add_chat_bubble( message="Typing...", sender="robot")
 
         # Schedule displaying chatbot's response after a delay
         Clock.schedule_once(lambda dt: self.display_chatbot_response(user_text), 1.0)
@@ -165,19 +158,24 @@ class ChatScreen(Screen):
         # Remove typing indicator bubble
         self.msglist.remove_widget(self.chat_bubbles[-1])
         self.chat_bubbles.pop()
+        self.chat_history.pop()
 
         # Add chatbot's response to chat history
         self.add_chat_bubble(response, sender="robot")
 
 
     def add_chat_bubble(self, message, sender):
-
+        # creates the chat bubble and adds to the msglist
         if sender == "account":
             icon = "account"
             bubble_color = self.theme_cls.primary_color
         else:
             icon = "robot"
             bubble_color = self.theme_cls.accent_color
+
+        #temparary handle for None message...
+        if message == None:
+            message = "Sorry I dont understand :("
 
         if message:
             # Add user's message to chat history
@@ -221,18 +219,11 @@ class ChatScreen(Screen):
             self.chat_history = []
 
 
-
-
-
-
-    def chat_maintenance(self, user_input):
-        # Clear user input
-        user_input.text = ""
-
     def home(self):
         # Clear chat history or perform any desired action
         self.save_chat()
         self.delete_chat()
+
 
     def delete_chat(self):
         # Clear chat history or perform any desired action
@@ -240,17 +231,13 @@ class ChatScreen(Screen):
             self.msglist.remove_widget(chat_bubble)
         self.chat_bubbles = []
 
-        # Add new chat widget if it's not already displayed
-        if not self.new_chat_widget_instance:
-            new_chat_widget = NewChat()
-            new_chat_widget.parent_screen = self
-            self.new_chat.add_widget(new_chat_widget)
-            self.new_chat_widget_instance = new_chat_widget
+        # Add new chat widget
+        self.on_enter()
 
 
 class MyApp(MDApp):
     def build(self):
-        '''Initialize the application and return the root widget'''
+        '''Initialize the application and returns the root widget'''
         self.theme_cls.primary_palette = 'Blue'
         self.theme_cls.accent_palette = 'Green'
         self.theme_cls.theme_style = "Light"
