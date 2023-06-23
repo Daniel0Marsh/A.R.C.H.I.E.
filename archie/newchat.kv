@@ -79,23 +79,23 @@
             size_hint: 1, None
             pos_hint: {"center_x": .5}
             height: self.minimum_height
-            padding: "35dp", 0, 0, 0
+            padding: "20dp", 0, 0, 0
             spacing: "10dp"  # Adjust the spacing between the buttons
 
             MDRaisedButton:
-                text: "Tell me a joke"
+                text: '"Tell me a joke"'
                 theme_text_color: "Primary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me a joke")
 
             MDRaisedButton:
-                text: "Fun fact"
+                text: '"Fun fact"'
                 theme_text_color: "Primary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me a fun fact")
 
             MDRaisedButton:
-                text: "What's AI"
+                text: '"What is AI"'
                 theme_text_color: "Primary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me what AI is")

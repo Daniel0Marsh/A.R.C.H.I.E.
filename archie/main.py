@@ -17,7 +17,8 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 from nltk.chat.util import Chat, reflections
-from chatbot_data import pairs
+from brain import generate_response
+import brain
 
 Builder.load_file('chathistory.kv')
 Builder.load_file('chatbubble.kv')
@@ -106,7 +107,7 @@ class ChatScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls = ThemeManager()
-        self.chatbot = Chat(pairs, reflections)
+        #self.chatbot = Chat(pairs, reflections)
         self.msglist = self.ids['msglist']
         self.new_chat = self.ids['new_chat']
         self.new_chat_widget_instance = None  # Instance of NewChat widget
@@ -136,11 +137,12 @@ class ChatScreen(Screen):
         user_text = user_input.text.strip()
         user_input.text = ""
 
-        # Check remove new chat widget
-        self.remove_new_chat_widget()
+        if user_text:
+            # remove new chat widget
+            self.remove_new_chat_widget()
 
-        self.add_chat_bubble(user_text, sender="account")
-        self.get_chatbot_response(user_text)
+            self.add_chat_bubble(user_text, sender="account")
+            self.get_chatbot_response(user_text)
 
 
     def get_chatbot_response(self, user_text):
@@ -153,7 +155,7 @@ class ChatScreen(Screen):
 
     def display_chatbot_response(self, user_text):
         # Get response from the chatbot
-        response = self.chatbot.respond(user_text)
+        response = generate_response(user_text)
 
         # Remove typing indicator bubble
         self.msglist.remove_widget(self.chat_bubbles[-1])
@@ -193,26 +195,23 @@ class ChatScreen(Screen):
         # Saving chat history
         messages = self.chat_history
 
-        if messages:
-            file_path = "chat_history.json"
+        try:
+            # Load the existing data
+            with open("chat_history.json", "r") as file:
+                existing_data = json.load(file)
+        except FileNotFoundError:
+            existing_data = {}
 
-            try:
-                # Load the existing data
-                with open(file_path, "r") as file:
-                    existing_data = json.load(file)
-            except FileNotFoundError:
-                existing_data = {}
-
-            if title:
-                # If title exists, replace it with new data
-                existing_data[title] = messages
-            else:
-                # Use the first element in messages as the key
-                title = messages[0]
-                existing_data[title] = messages
+        if title:
+            # If title exists, replace it with new data
+            existing_data[title] = messages
+        else:
+            # Use the first element in messages as the key
+            title = messages[0]
+            existing_data[title] = messages
 
             # Write the updated data to the file
-            with open(file_path, "w") as file:
+            with open("chat_history.json", "w") as file:
                 json.dump(existing_data, file, indent=4)  # Write the entire data with indentation
 
             # Clear chat history
