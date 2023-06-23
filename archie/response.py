@@ -1,10 +1,35 @@
 # Define pairs of patterns and responses
 
 pairs = [
+
+    #getting user data intrests, age and name
     [
         r"my name is (.*)",
         ["Hello %1, How are you today?", "Nice to meet you, %1! How can I assist you?"]
     ],
+    [
+        r"(What is my name|whats my name)\??",
+        ["Your name is %1.", "You told me your name is %1."]
+    ],
+    [
+        r"(my age is (.*)",
+        ["Cool your %1!", "Wow %1 is old!","Wow %1 is young!"]
+    ],
+    [
+        r"(What is my age|whats my age|how old am i)\??",
+        ["Your age is %1.", "You told me you are %s years old", "you are %s years old"]
+    ],
+    [
+        r"my intrests are (.*)",
+        ["Cool i like %1 too!", "Wow %1 is cool!"]
+    ],
+    [
+        r"What are my intrests\??",
+        ["you like %1.", "your intrests are %1"]
+    ],
+
+# gerneral questions and answers
+
     [
         r"(hi|hey|hello|yo|archie)",
         ["Hello", "Hey there", "Hi! How can I help you?"]
@@ -22,7 +47,7 @@ pairs = [
         ["I can provide information, answer questions, and have general conversations. How can I assist you today?"]
     ],
     [
-        r"(.*)(tell me a joke|joke?|give me a joke|make me laugh)",
+        r"(tell me a joke|joke?|give me a joke|make me laugh)",
         ["Sure! Why don't scientists trust atoms? Because they make up everything!", "Can February March? No, but April May!"]
     ],
     [
