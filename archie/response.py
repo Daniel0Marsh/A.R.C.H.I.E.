@@ -1,5 +1,51 @@
-# Define pairs of patterns and responses
+# Dictionary mapping custom user data pattern
+user_data_patterns = {
+    r"my name is (.*)": {
+        "key": "name",
+        "index": 0,
+        "save": True,
+        "default_response": ""
+    },
+    r"(What is my name|whats my name)\??": {
+        "key": "name",
+        "index": 1,
+        "save": False,
+        "default_response": "I don't know your name yet. Can you please tell me?"
+    },
+    r"my age is (\d+)": {
+        "key": "age",
+        "index": 2,
+        "save": True,
+        "default_response": ""
+    },
+    r"(What is my age|whats my age|how old am i)\??": {
+        "key": "age",
+        "index": 3,
+        "save": False,
+        "default_response": "I don't know your age yet. Can you please tell me?"
+    },
+    r"i like (.*)": {
+        "key": "interests",
+        "index": 4,
+        "save": True,
+        "default_response": "I don't know your interests yet. Can you please tell me?"
+    },
+    r"(What do i like|whats my interests)\??": {
+        "key": "interests",
+        "index": 5,
+        "save": False,
+        "default_response": "I don't know your interests yet. Can you please tell me?"
+    },
+    r"(do you know me|what do you know about me)\??": {
+        "key": "all",
+        "index": 6,
+        "save": False,
+        "default_response": "I dont really know you, but we can start with names, Hi im ARCHIE!"
+    },
 
+}
+
+# Define pairs of patterns and responses
 pairs = [
 
     #getting user data intrests, age and name
@@ -12,26 +58,30 @@ pairs = [
         ["Your name is %1.", "You told me your name is %1."]
     ],
     [
-        r"(my age is (.*)",
+        r"my age is (.*)",
         ["Cool your %1!", "Wow %1 is old!","Wow %1 is young!"]
     ],
     [
         r"(What is my age|whats my age|how old am i)\??",
-        ["Your age is %1.", "You told me you are %s years old", "you are %s years old"]
+        ["Your age is %1.", "You told me you are %1 years old", "you are %1 years old"]
     ],
     [
-        r"my intrests are (.*)",
+        r"i like (.*)",
         ["Cool i like %1 too!", "Wow %1 is cool!"]
     ],
     [
-        r"What are my intrests\??",
-        ["you like %1.", "your intrests are %1"]
+        r"What (do i like|are my intrests)\??",
+        ["you like %1.", "You told me you like %1."]
+    ],
+    [
+        r"(do you know me|what do you know about me)\??",
+        ["We are freinds, i know your name is %1, you are %2 years old and you like %3", "Yes I know you, your name is %1"]
     ],
 
 # gerneral questions and answers
 
     [
-        r"(hi|hey|hello|yo|archie)",
+        r"(hi|hey|hello|archie)",
         ["Hello", "Hey there", "Hi! How can I help you?"]
     ],
     [
@@ -100,7 +150,7 @@ pairs = [
     ],
     [
         r"who is your creator?",
-        ["I was created by a team of developers at CodeBlock."]
+        ["I was created by a developer at CodeBlock."]
     ],
     [
         r"how (.*) your day",
@@ -113,5 +163,9 @@ pairs = [
     [
         r"tell me (?:another|one more) joke",
         ["Sure! Why don't scientists trust atoms? Because they make up everything!", "Why don't skeletons fight each other? They don't have the guts!"]
+    ],
+    [
+        r"what is ai",
+        ["Certainly! AI stands for Artificial Intelligence. It refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. AI allows computers or systems to perform tasks that typically require human intelligence, such as problem-solving, decision-making, understanding natural language, recognizing images, and more./n AI can be categorized into two types: Narrow AI and General AI. Narrow AI, also known as Weak AI, is designed to perform specific tasks or functions, such as voice recognition or facial recognition. General AI, also referred to as Strong AI or Artificial General Intelligence (AGI), would possess human-like intelligence and be capable of understanding, learning, and performing any intellectual task that a human can do./nAI techniques include machine learning, where algorithms enable computers to learn from data and improve performance over time, and deep learning, which involves training neural networks with multiple layers to process complex patterns and make accurate predictions./nAI has various applications across industries, including healthcare, finance, transportation, entertainment, and more. It has the potential to revolutionize many aspects of our lives, making processes more efficient, improving decision-making, and enabling new innovations."]
     ],
 ]
