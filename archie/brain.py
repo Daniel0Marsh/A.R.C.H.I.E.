@@ -3,6 +3,8 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
 import random
+import json
+
 
 # Check if NLTK resources are downloaded, and if not, download them
 nltk.download('stopwords')
@@ -96,17 +98,39 @@ def custom_data_pattern_response(key, pattern, match, save, default_response):
     Generates a response based on the provided parameters and user input match.
     """
     if save:
-        # Save the user's input data in the user_info dictionary
+        # Save the user's input data in the user_info JSON file
         user_info[key] = match.group(1)
+        save_user_info_to_json('user_info.json', user_info)
         response = random.choice(pattern).replace("%1", user_info[key])
-    elif key != "all" and user_info[key]:
-        # Use the stored user data in the response if available
-        response = random.choice(pattern).replace("%1", user_info[key])
-    elif user_info.get("name") and user_info.get("age") and user_info.get("interests"):
-        # Use the stored user data in the response if available
-        response = random.choice(pattern).replace("%1", user_info["name"]).replace("%2", user_info["age"]).replace("%3", user_info["interests"])
     else:
-        # Use the default response if the user data is not available
-        response = default_response
+        # Load user information from the JSON file
+        user_info_json = load_user_info_from_json('user_info.json')
+
+        if key != "all" and user_info_json.get(key):
+            # Use the stored user data in the response if available
+            response = random.choice(pattern).replace("%1", user_info_json[key])
+        elif user_info_json.get("name") and user_info_json.get("age") and user_info_json.get("interests"):
+            # Use the stored user data in the response if available
+            response = random.choice(pattern).replace("%1", user_info_json["name"]).replace("%2", user_info_json["age"]).replace("%3", user_info_json["interests"])
+        else:
+            # Use the default response if the user data is not available
+            response = default_response
 
     return response
+
+
+def load_user_info_from_json(filename):
+    """
+    Loads user information from a JSON file.
+    """
+    with open(filename, 'r') as file:
+        return json.load(file)
+
+
+def save_user_info_to_json(filename, user_info):
+    """
+    Saves the user_info dictionary to a JSON file.
+    """
+    user_info_json = json.dumps(user_info)
+    with open(filename, 'w') as file:
+        file.write(user_info_json)
