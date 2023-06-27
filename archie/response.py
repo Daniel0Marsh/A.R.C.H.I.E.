@@ -125,6 +125,10 @@ pairs = [
         ["Sure! Did you know that honey never spoils? Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible."]
     ],
     [
+        r"tell me (?:another|one more) (fun fact|fact)",
+        ["Certainly! Did you know that the world's oldest known recipe is for beer? The recipe, called the ""Hymn to Ninkasi,"" was written on a Sumerian tablet dating back to around 1800 BCE."]
+    ],
+    [
         r"what is your favorite movie?",
         ["As an AI, I don't have personal preferences, but I can recommend some popular movies if you'd like."]
     ],
@@ -137,8 +141,8 @@ pairs = [
         ["You can reach out to me through this chat interface."]
     ],
     [
-        r"tell me about yourself",
-        ["I am an AI language model designed to assist and engage in conversations."]
+        r"(tell me about yourself|who are you|what are you)",
+        ["I am an AI language model designed to assist and engage in conversations.","my name is ARCHIE and im an AI language model"]
     ],
     [
         r"can you help me with programming?",
@@ -166,6 +170,6 @@ pairs = [
     ],
     [
         r"what is ai",
-        ["Certainly! AI stands for Artificial Intelligence. It refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. AI allows computers or systems to perform tasks that typically require human intelligence, such as problem-solving, decision-making, understanding natural language, recognizing images, and more./n AI can be categorized into two types: Narrow AI and General AI. Narrow AI, also known as Weak AI, is designed to perform specific tasks or functions, such as voice recognition or facial recognition. General AI, also referred to as Strong AI or Artificial General Intelligence (AGI), would possess human-like intelligence and be capable of understanding, learning, and performing any intellectual task that a human can do./nAI techniques include machine learning, where algorithms enable computers to learn from data and improve performance over time, and deep learning, which involves training neural networks with multiple layers to process complex patterns and make accurate predictions./nAI has various applications across industries, including healthcare, finance, transportation, entertainment, and more. It has the potential to revolutionize many aspects of our lives, making processes more efficient, improving decision-making, and enabling new innovations."]
+        ["Certainly! AI stands for Artificial Intelligence. It refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. AI allows computers or systems to perform tasks that typically require human intelligence, such as problem-solving, decision-making, understanding natural language, recognizing images, and more.\n AI can be categorized into two types: Narrow AI and General AI. Narrow AI, also known as Weak AI, is designed to perform specific tasks or functions, such as voice recognition or facial recognition. General AI, also referred to as Strong AI or Artificial General Intelligence (AGI), would possess human-like intelligence and be capable of understanding, learning, and performing any intellectual task that a human can do.\nAI techniques include machine learning, where algorithms enable computers to learn from data and improve performance over time, and deep learning, which involves training neural networks with multiple layers to process complex patterns and make accurate predictions.\nAI has various applications across industries, including healthcare, finance, transportation, entertainment, and more. It has the potential to revolutionize many aspects of our lives, making processes more efficient, improving decision-making, and enabling new innovations."]
     ],
 ]
