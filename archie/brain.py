@@ -99,12 +99,13 @@ def custom_data_pattern_response(key, pattern, match, save, default_response):
     """
     if save:
         # Save the user's input data in the user_info JSON file
-        user_info[key] = match.group(1)
-        save_user_info_to_json('user_info.json', user_info)
-        response = random.choice(pattern).replace("%1", user_info[key])
+        data = match.group(1)
+        save_user_data('data/user_info.json', key, data)
+        user_info_json = load_user_data('data/user_info.json')
+        response = random.choice(pattern).replace("%1", user_info_json[key])
     else:
         # Load user information from the JSON file
-        user_info_json = load_user_info_from_json('user_info.json')
+        user_info_json = load_user_data('data/user_info.json')
 
         if key != "all" and user_info_json.get(key):
             # Use the stored user data in the response if available
@@ -119,7 +120,7 @@ def custom_data_pattern_response(key, pattern, match, save, default_response):
     return response
 
 
-def load_user_info_from_json(filename):
+def load_user_data(filename):
     """
     Loads user information from a JSON file.
     """
@@ -127,10 +128,19 @@ def load_user_info_from_json(filename):
         return json.load(file)
 
 
-def save_user_info_to_json(filename, user_info):
+def save_user_data(filename, key, data):
     """
     Saves the user_info dictionary to a JSON file.
     """
-    user_info_json = json.dumps(user_info)
-    with open(filename, 'w') as file:
-        file.write(user_info_json)
+    try:
+        # Load the existing data
+        with open(filename, "r") as file:
+            user_info_json = json.load(file)
+    except FileNotFoundError:
+        user_info_json = {}
+
+    user_info_json[key] = data
+
+    # Write the updated data to the file
+    with open(filename, "w") as file:
+        json.dump(user_info_json, file, indent=4)  # Write the entire data with indentation

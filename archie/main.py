@@ -17,13 +17,12 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 from nltk.chat.util import Chat, reflections
-from brain import generate_response
-import brain
+from brain import generate_response, load_user_data
 
-Builder.load_file('chathistory.kv')
-Builder.load_file('chatbubble.kv')
-Builder.load_file('newchat.kv')
-Builder.load_file('chatscreen.kv')
+Builder.load_file('static/chathistory.kv')
+Builder.load_file('static/chatbubble.kv')
+Builder.load_file('static/newchat.kv')
+Builder.load_file('static/chatscreen.kv')
 
 Window.size = (400, 600)
 
@@ -50,8 +49,7 @@ class ChatHistory(BoxLayout):
         chat_screen.remove_new_chat_widget()
 
         # Read chat history data from JSON file
-        with open('chat_history.json', 'r') as json_file:
-            data = json.load(json_file)
+        data = load_user_data('data/chat_history.json')
 
         # Get the chat history for the given title
         chat_messages = data.get(title, [])
@@ -67,14 +65,13 @@ class ChatHistory(BoxLayout):
         chatlist.remove_widget(chat_history_instance)
 
         # Read chat history data from JSON file
-        with open('chat_history.json', 'r') as json_file:
-            data = json.load(json_file)
+        data = load_user_data('data/chat_history.json')
 
-            # Remove chat history entry with the given title
-            del data[title]
+        # Remove chat history entry with the given title
+        del data[title]
 
         # Write modified chat history data back to the JSON file
-        with open('chat_history.json', 'w') as json_file:
+        with open('data/chat_history.json', 'w') as json_file:
             json.dump(data, json_file)
 
 
@@ -86,8 +83,8 @@ class NewChat(MDBoxLayout):
         self.theme_cls = ThemeManager()
         self.chatlist = self.ids['chatlist']
 
-        with open('chat_history.json') as json_file:
-            data = json.load(json_file)
+        # Read chat history data from JSON file
+        data = load_user_data('data/chat_history.json')
         chat_history = data.keys()
 
         for item in chat_history:
@@ -140,7 +137,6 @@ class ChatScreen(Screen):
         if user_text:
             # remove new chat widget
             self.remove_new_chat_widget()
-
             self.add_chat_bubble(user_text, sender="account")
             self.get_chatbot_response(user_text)
 
@@ -197,7 +193,7 @@ class ChatScreen(Screen):
 
         try:
             # Load the existing data
-            with open("chat_history.json", "r") as file:
+            with open("data/chat_history.json", "r") as file:
                 existing_data = json.load(file)
         except FileNotFoundError:
             existing_data = {}
@@ -211,7 +207,7 @@ class ChatScreen(Screen):
             existing_data[title] = messages
 
             # Write the updated data to the file
-            with open("chat_history.json", "w") as file:
+            with open("data/chat_history.json", "w") as file:
                 json.dump(existing_data, file, indent=4)  # Write the entire data with indentation
 
             # Clear chat history
@@ -219,13 +215,13 @@ class ChatScreen(Screen):
 
 
     def home(self):
-        # Clear chat history or perform any desired action
+        # saves and Clears chat history change screens to home
         self.save_chat()
         self.delete_chat()
 
 
     def delete_chat(self):
-        # Clear chat history or perform any desired action
+        # Clear chat history
         for chat_bubble in self.chat_bubbles:
             self.msglist.remove_widget(chat_bubble)
         self.chat_bubbles = []
