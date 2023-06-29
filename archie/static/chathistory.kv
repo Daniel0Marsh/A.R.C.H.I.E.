@@ -13,7 +13,6 @@
             elevation: 2
             padding: "5dp"
             height: label.texture_size[1] + self.padding[1] * 2
-            theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
             md_bg_color: app.theme_cls.primary_color
 
             BoxLayout:
@@ -23,18 +22,19 @@
                 MDLabel:
                     id: label
                     text: root.title
-                    theme_text_color: "Primary"
+                    theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
+
                     adaptive_height: True
                     font_style: "Body1"
 
                 MDIconButton:
                     icon: "folder-open"
                     pos_hint: {"center_y": 0.5}
-                    theme_text_color: "Primary"
+                    theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
                     on_release: root.open(root.title)
 
                 MDIconButton:
                     icon: "delete"
                     pos_hint: {"center_y": 0.5}
-                    theme_text_color: "Primary"
+                    theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
                     on_release: root.delete(root.title, root)

@@ -17,7 +17,6 @@
             elevation: 3
             padding: "8dp"
             spacing: "8dp"
-            theme_text_color: "Primary"
             md_bg_color: app.theme_cls.bg_dark if app.theme_cls.theme_style == 'Dark' else app.theme_cls.bg_light
 
             BoxLayout:
@@ -58,7 +57,6 @@
             elevation: 3
             padding: "8dp"
             spacing: "8dp"
-            theme_text_color: "Primary"
             md_bg_color: app.theme_cls.bg_dark if app.theme_cls.theme_style == 'Dark' else app.theme_cls.bg_light
 
             BoxLayout:
@@ -84,18 +82,18 @@
 
             MDRaisedButton:
                 text: '"Tell me a joke"'
-                theme_text_color: "Primary"
+                theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me a joke")
 
             MDRaisedButton:
                 text: '"Fun fact"'
-                theme_text_color: "Primary"
+                theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("Tell me a fun fact")
 
             MDRaisedButton:
                 text: '"What is AI"'
-                theme_text_color: "Primary"
+                theme_text_color: "Primary" if app.theme_cls.theme_style == 'Dark' else "Secondary"
                 md_bg_color: app.theme_cls.primary_color
                 on_release: root.chat_subject("What is AI")
